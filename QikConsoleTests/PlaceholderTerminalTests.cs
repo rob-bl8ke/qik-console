@@ -12,7 +12,7 @@ namespace QikConsoleTests
         public void Should_Get_The_Value_For_A_Placeholder_Symbol()
         {
             var interpreter = new Interpreter();
-            var symbolTerminal = interpreter.Interpret(new FunctionFactory(TestHelpers.StubPluginLoader), "@InputVar => \"Hello World\";");
+            var symbolTerminal = interpreter.Interpret(new FunctionFactory(PluginHelpers.StubPluginLoader), "@InputVar => \"Hello World\";");
             var terminal = new PlaceholderTerminal(symbolTerminal, "@{", "}");
 
             Assert.AreEqual("Hello World", terminal.GetPlaceholderValue("@{InputVar}"));
@@ -28,7 +28,7 @@ namespace QikConsoleTests
                 ";
 
             var interpreter = new Interpreter();
-            var symbolTerminal = interpreter.Interpret(new FunctionFactory(TestHelpers.StubPluginLoader), script);
+            var symbolTerminal = interpreter.Interpret(new FunctionFactory(PluginHelpers.StubPluginLoader), script);
             var terminal = new PlaceholderTerminal(symbolTerminal, "@{", "}");
             var originalValue = terminal.GetPlaceholderValue("@{TestDesc}");
             
@@ -50,7 +50,7 @@ namespace QikConsoleTests
                 ";
 
             var interpreter = new Interpreter();
-            var symbolTerminal = interpreter.Interpret(new FunctionFactory(TestHelpers.StubPluginLoader), script);
+            var symbolTerminal = interpreter.Interpret(new FunctionFactory(PluginHelpers.StubPluginLoader), script);
             var terminal = new PlaceholderTerminal(symbolTerminal, "@{", "}");
 
             Assert.AreEqual(2, terminal.InputSymbols.Length);
@@ -69,7 +69,7 @@ namespace QikConsoleTests
                 ";
 
             var interpreter = new Interpreter();
-            var symbolTerminal = interpreter.Interpret(new FunctionFactory(TestHelpers.StubPluginLoader), script);
+            var symbolTerminal = interpreter.Interpret(new FunctionFactory(PluginHelpers.StubPluginLoader), script);
             var terminal = new PlaceholderTerminal(symbolTerminal, "@{", "}");
 
             Assert.AreEqual(3, terminal.Placeholders.Length);

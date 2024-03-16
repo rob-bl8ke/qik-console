@@ -7,9 +7,9 @@
 ## Usage
 
 ```bash
-./QikConsole --help
+qikconsole --help
 
-./QikConsole gen project -f ./project.json
+qikconsole gen simple -f ./project.xml -p nt
 ```
 
 ## Development
@@ -28,7 +28,7 @@ dotnet publish -r linux-x64 --self-contained true
 - For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
 
 ```
-            "console": "externalTerminal",
+"console": "externalTerminal",
 ```
 
 ## System.Commandline

@@ -7,6 +7,7 @@ using CygSoft.Qik.QikConsole;
 
 using NLog;
 using NLog.Extensions.Logging;
+using QikConsole;
 
 //
 // TODO: Find out how to dependency inject the logger in order to mock the interface for unit tests.
@@ -37,7 +38,7 @@ class Program
                 .AddSingleton<IInterpreter, Interpreter>()
                 .AddSingleton<ILogger>(logger => LogManager.Setup().LoadConfigurationFromSection(config).GetCurrentClassLogger())
                 .AddSingleton<IFileFunctions>(ah => new FileFunctions())
-                .AddSingleton<IProjectFile, ProjectFile>()
+                .AddSingleton<IProjectsFile, ProjectsFile>()
                 .AddSingleton<ICommandFactory, CommandFactory>()
             ;
 

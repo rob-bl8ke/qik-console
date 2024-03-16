@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects>
+  <globals>
+    <input key="ps" title="Release Date (Product Support)" symbol="PsReleaseDate" value="0000-00-00" />
+    <input key="u1" title="Release Date (UAT 1)" symbol="Uat1ReleaseDate" value="0000-00-00" />
+    <input key="u2" title="Release Date (UAT 2)" symbol="Uat2ReleaseDate" value="0000-00-00" />
+  </globals>
+  <project key="nt" value="New Task">
+    <settings>
+      <!-- Should be able to remove this when this xml file is fully functional -->
+      <setting key="path" value="C:\Dev\Qik-Gen\project.json" />
+      <setting key="scriptPath" value="C:\Dev\Qik-Gen\project.qik" />
+      <setting key="postScript" value="C:\Dev\Scripts\data\post-script.ps1">
+        <parameters>
+          <parameter key="source" value="C:\Dev\Qik-Gen\output" />
+          <parameter key="destination" value="C:\Users\rallenblake\OneDrive - Ninety One\Documents\Junk\" />
+          <parameter key="deleteSource" value="true" />
+        </parameters>
+      </setting>
+    </settings>
+    <inputs>
+      <input key="id" title="Issue Id" symbol="IssueId" value="894751" />
+      <input key="tt" title="Issue Title" symbol="IssueTitle" value="To or not to be... that is the question" />
+      <input key="pa" title="Parent Issue" symbol="ParentIssueId" value="757841" />
+      <auto key="typ" title="Issue Type" symbol="IssueType" value="Task" />
+      <global key="ps" />
+      <global key="u1" />
+      <global key="u2" />
+    </inputs>
+    <fragments>
+      <fragment key="deploy" path="..\fragments\deploy.qikt" />
+      <fragment key="usecase" path="..\fragments\usecase.qikt" />
+    </fragments>
+    <documents>
+      <document>
+        <parts>
+          <part key="deploy" />
+          <part key="usecase" />
+        </parts>
+        <outputs>
+          <output path="..\_testing\usecase-diagrams.md" />
+          <output path="usecase-diagrams.md" />
+        </outputs>
+      </document>
+    </documents>
+  </project>
+  <project key="ns" value="New Story">
+    <settings>
+      <!-- Should be able to remove this when this xml file is fully functional -->
+      <setting key="path" value="C:\Dev\Qik-Gen\project.json" />
+      <setting key="scriptPath" value="C:\Dev\Qik-Gen\project.qik" />
+      <setting key="postScript" value="C:\Dev\Scripts\data\post-script.ps1">
+        <parameters>
+          <parameter key="source" value="C:\Dev\Qik-Gen\output" />
+          <parameter key="destination" value="C:\Users\rallenblake\OneDrive - Ninety One\Documents\Junk\" />
+          <parameter key="deleteSource" value="true" />
+        </parameters>
+      </setting>
+    </settings>
+    <inputs>
+      <input key="id" title="Issue Id" symbol="IssueId" value="666666" />
+      <input key="tt" title="Issue Title" symbol="IssueTitle" value="Metallica" />
+      <input key="pa" title="Parent Issue" symbol="ParentIssueId" value="777777" />
+      <auto key="it" title="Issue Type" symbol="IssueType" value="Story" />
+      <global key="ps" />
+      <global key="u1" />
+      <global key="u2" />
+    </inputs>
+    <fragments>
+      <fragment key="deploy" path="..\fragments\deploy.qikt" />
+      <fragment key="usecase" path="..\fragments\usecase.qikt" />
+    </fragments>
+    <documents>
+      <document>
+        <parts>
+          <part key="deploy" />
+          <part key="usecase" />
+        </parts>
+        <outputs>
+          <output path="..\_testing\usecase-diagrams.md" />
+          <output path="usecase-diagrams.md" />
+        </outputs>
+      </document>
+    </documents>
+  </project>
+</projects>

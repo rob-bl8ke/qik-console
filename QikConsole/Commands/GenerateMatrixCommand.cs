@@ -4,6 +4,7 @@ using System.CommandLine.Invocation;
 using System.CommandLine.NamingConventionBinder;
 using System.IO;
 using System.Linq;
+using QikConsole;
 
 namespace CygSoft.Qik.QikConsole
 {
@@ -11,7 +12,7 @@ namespace CygSoft.Qik.QikConsole
 
     public class GenerateMatrixCommand : BaseCommand
     {
-        public GenerateMatrixCommand(IProjectFile projectFile, IFileFunctions fileFunctions, NLog.ILogger logger) : base (projectFile, fileFunctions, logger){}
+        public GenerateMatrixCommand(IProjectsFile projectsFile, IFileFunctions fileFunctions, NLog.ILogger logger) : base (projectsFile, fileFunctions, logger){}
 
         public override Command Configure()
         {
