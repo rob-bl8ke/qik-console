@@ -119,17 +119,10 @@ qikconsole gen -t legacyjsonproject -f ./project.json "-i", "IssueId=34567;Issue
 
 **Linux Release**
 
+> NOTE TO SELF: Has not been tested here for some time now.
+
 ```bash
 dotnet publish -r linux-x64 --self-contained true
-```
-
-### Debugging
-
-- Important that the `externalTerminal` (Windows) is set for the `console` setting in your `launch.json`. Otherwise you'll run the program in your `internalConsole` and it will break. 
-- For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-
-```
-"console": "externalTerminal",
 ```
 
 ## System.Commandline
