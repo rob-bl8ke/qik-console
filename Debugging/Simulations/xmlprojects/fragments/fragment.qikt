@@ -1,0 +1,7 @@
+@{IssueId}
+@{IssueTitle}
+@{ParentIssueId}
+@{IssueType}
+@{PsReleaseDate}
+@{Uat1ReleaseDate}
+@{Uat2ReleaseDate}

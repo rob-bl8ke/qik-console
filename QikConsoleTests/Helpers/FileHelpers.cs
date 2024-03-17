@@ -14,8 +14,8 @@ namespace QikConsoleTests
         // public static void CreateProjectXml(string directoryName) => File.Create(Path.Combine(GetFilesFolder(), "project.xml"), 1024, FileOptions.None);
         // public static void DeleteProjectXml(string directoryName) => File.Delete(Path.Combine(GetFilesFolder(), "project.xml"));
 
-        public static string GetProjectXml() => File.ReadAllText(Path.Combine(GetFilesFolder(), "project.xml"));
-        public static string GetProjectXmlFilePath() => Path.Combine(GetFilesFolder(), "project.xml");
+        public static string GetProjectXml() => File.ReadAllText(Path.Combine(GetFilesFolder(), "projects.xml"));
+        public static string GetProjectXmlFilePath() => Path.Combine(GetFilesFolder(), "projects.xml");
         private static string GetFilesFolder() => Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Files");
     }
 }

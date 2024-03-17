@@ -1,0 +1,18 @@
+{
+    "scriptPath": "script.qik",
+    "postExecutionScripts": [
+        "deploy.ps1"
+    ],
+    "fragments": [
+        {
+            "id": "fragment",
+            "path": ".\\fragments\\fragment.qikt"
+        }
+    ],
+    "documents": [
+        {
+            "outputFilePaths": [".\\output\\doc.md"],
+            "structure": ["fragment"]
+        }
+    ]
+}

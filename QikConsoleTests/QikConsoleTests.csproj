@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-      <Content Include="Files\project.xml">
+      <Content Include="Files\projects.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

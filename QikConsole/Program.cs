@@ -38,7 +38,7 @@ class Program
                 .AddSingleton<IInterpreter, Interpreter>()
                 .AddSingleton<ILogger>(logger => LogManager.Setup().LoadConfigurationFromSection(config).GetCurrentClassLogger())
                 .AddSingleton<IFileFunctions>(ah => new FileFunctions())
-                .AddSingleton<IProjectsFile, ProjectsFile>()
+                .AddSingleton<IProjectsFile, XmlProjectsFile>()
                 .AddSingleton<ICommandFactory, CommandFactory>()
             ;
 
@@ -46,12 +46,8 @@ class Program
             commandFactory = serviceProvider.GetService<ICommandFactory>();
 
             var rootCommand = new RootCommand("Qik Console Application");
-            var generateCommand = new Command("gen", "Generate output.");
-
-            rootCommand.Add(generateCommand);
-
-            generateCommand.Add(commandFactory.Create(CommandType.GenerateSimple));
-            // generateCommand.Add(commandFactory.Create(CommandType.GenerateMatrix));
+            var genCommand = commandFactory.Create(CommandType.Generate);
+            rootCommand.Add(genCommand);
 
             //
             // Parse the incoming args and invoke the handler

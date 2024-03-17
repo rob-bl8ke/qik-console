@@ -1,7 +1,5 @@
-using CygSoft.Qik.QikConsole;
 using NUnit.Framework;
 using System.Linq;
-using Moq;
 using QikConsole;
 
 
@@ -26,20 +24,20 @@ namespace QikConsoleTests
         [Test]
         public void Should_Get_Project_Settings()
         {
-            ProjectsFile file = new ProjectsFile();
+            XmlProjectsFile file = new XmlProjectsFile();
             file.Load(FileHelpers.GetProjectXmlFilePath());
             Project project = file.GetProject("nt");
 
             Assert.IsNotNull(project);
             Assert.AreEqual("nt", project.Key);
             Assert.AreEqual("New Task", project.Title);
-            Assert.AreEqual(@"C:\Dev\Qik-Gen\project.qik", project.ScriptFile);
+            Assert.AreEqual(@"C:\Dev\Qik-Gen\project.qik", project.ScriptPath);
         }
 
         [Test]
         public void Should_Get_Project_Fragments()
         {
-            ProjectsFile file = new ProjectsFile();
+            XmlProjectsFile file = new XmlProjectsFile();
             file.Load(FileHelpers.GetProjectXmlFilePath());
             Project project = file.GetProject("nt");
 
@@ -53,7 +51,7 @@ namespace QikConsoleTests
         [Test]
         public void Should_Get_Project_Document_Structure()
         {
-            ProjectsFile file = new ProjectsFile();
+            XmlProjectsFile file = new XmlProjectsFile();
             file.Load(FileHelpers.GetProjectXmlFilePath());
             Project project = file.GetProject("nt");
 
@@ -65,7 +63,7 @@ namespace QikConsoleTests
         [Test]
         public void Should_Get_Project_Document_Outputs()
         {
-            ProjectsFile file = new ProjectsFile();
+            XmlProjectsFile file = new XmlProjectsFile();
             file.Load(FileHelpers.GetProjectXmlFilePath());
             Project project = file.GetProject("nt");
 

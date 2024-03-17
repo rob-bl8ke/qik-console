@@ -4,12 +4,9 @@ using QikConsole;
 
 namespace CygSoft.Qik.QikConsole
 {
-    using static System.Console;
-
     public enum CommandType
     {
-        GenerateSimple,
-        GenerateMatrix
+        Generate
     }
 
     public interface ICommandFactory
@@ -34,11 +31,8 @@ namespace CygSoft.Qik.QikConsole
         {
             switch (commandType)
             {
-                case CommandType.GenerateSimple:
-                    return new GenerateSimpleCommand(projectsFile, fileFunctions, logger).Configure();
-
-                case CommandType.GenerateMatrix:
-                    return new GenerateMatrixCommand(projectsFile, fileFunctions, logger).Configure();
+                case CommandType.Generate:
+                    return new GenerateCommand(projectsFile, fileFunctions, logger).Configure();
                 
                 default:
                     throw new NotImplementedException();

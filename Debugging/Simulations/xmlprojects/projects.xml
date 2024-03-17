@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projects>
+  <globals>
+    <input key="ps" title="Release Date (Product Support)" symbol="PsReleaseDate" value="0000-00-00" />
+    <input key="u1" title="Release Date (UAT 1)" symbol="Uat1ReleaseDate" value="0000-00-00" />
+    <input key="u2" title="Release Date (UAT 2)" symbol="Uat2ReleaseDate" value="0000-00-00" />
+  </globals>
+  <project key="ns" value="New Story">
+    <settings>
+      <!-- Should be able to remove this when this xml file is fully functional -->
+      <setting key="path" value="C:\Dev\Qik-Gen\project.json" />
+      <setting key="scriptPath" value=".\script.qik" />
+      <setting key="postScript" value="C:\Dev\Scripts\data\post-script.ps1">
+        <parameters>
+          <parameter key="source" value="C:\Dev\Qik-Gen\output" />
+          <parameter key="destination" value="C:\Users\rallenblake\OneDrive - Ninety One\Documents\Junk\" />
+          <parameter key="deleteSource" value="true" />
+        </parameters>
+      </setting>
+    </settings>
+    <inputs>
+      <input key="id" title="Issue Id" symbol="IssueId" value="666666" />
+      <input key="tt" title="Issue Title" symbol="IssueTitle" value="Metallica" />
+      <input key="pa" title="Parent Issue" symbol="ParentIssueId" value="777777" />
+      <auto key="it" title="Issue Type" symbol="IssueType" value="Story" />
+      <global key="ps" />
+      <global key="u1" />
+      <global key="u2" />
+    </inputs>
+    <fragments>
+      <fragment key="fragment" path=".\fragments\fragment.qikt" />
+    </fragments>
+    <documents>
+      <document>
+        <parts>
+          <part key="fragment" />
+        </parts>
+        <outputs>
+          <output path=".\\output\doc.md" />
+        </outputs>
+      </document>
+    </documents>
+  </project>
+</projects>

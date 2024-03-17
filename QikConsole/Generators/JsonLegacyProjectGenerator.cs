@@ -1,60 +1,33 @@
 using System;
-using System.IO;
-using System.Text;
-using System.Linq;
 using System.Collections.Generic;
-using System.CommandLine;
+using System.IO;
+using System.Linq;
+using System.Text;
 using CygSoft.Qik.Functions;
-using System.CommandLine.NamingConventionBinder;
+using NLog;
 using QikConsole;
 
 namespace CygSoft.Qik.QikConsole
 {
-    using static System.Console;
-
-    public class GenerateSimpleCommand : BaseCommand
+    public class JsonLegacyProjectGenerator
     {
-        private Dictionary<string, string> fragmentsDictionary = new Dictionary<string, string>();
+        private Dictionary<string, string> fragmentsDictionary = new();
+        private readonly JsonLegacyProjectFile projectFile;
+        private readonly IFileFunctions fileFunctions;
+        private readonly ILogger logger;
 
-        public GenerateSimpleCommand(IProjectsFile projectsFile, IFileFunctions fileFunctions, NLog.ILogger logger): base (projectsFile, fileFunctions, logger) {}
-
-        public override Command Configure()
+        public JsonLegacyProjectGenerator(JsonLegacyProjectFile projectFile, IFileFunctions fileFunctions, NLog.ILogger logger)
         {
-            var fileOption = new Option<string>( new[] { "--file", "-f" }, "The path to the project configuration file with inputs, settings, and document structure.");
-            fileOption.IsRequired = true;
-            fileOption.Arity = ArgumentArity.ExactlyOne;
-
-            var projectOption = new Option<string>( new[] { "--projectKey", "-p" }, "The project to generate.");
-            fileOption.IsRequired = true;
-            fileOption.Arity = ArgumentArity.ExactlyOne;
-
-            var inputsOption =  new Option<string>(new[] { "--inputs", "-i" }, "Assign inputs to any input variables.");
-            inputsOption.IsRequired = false;
-            inputsOption.Arity = ArgumentArity.ExactlyOne; 
-
-
-            var cmd = new Command("simple", "Generates from a single input set.")
-            {
-                fileOption,
-                projectOption,
-                inputsOption
-            };
-
-            cmd.Handler = CommandHandler.Create((Action<string, string, string>)((file, projectKey, inputs) =>
-            {
-                ExcecuteAll(file, projectKey, inputs);
-            }));
-
-            return cmd;
+            this.projectFile = projectFile;
+            this.fileFunctions = fileFunctions;
+            this.logger = logger;
         }
-
-        private void ExcecuteAll(string filePath, string projectKey, string inputs)
+        
+        public void Execute(string filePath, string projectKey, string inputs)
         {
-            DisplayWelcomeHeader();
-
             if (string.IsNullOrWhiteSpace(filePath) || !fileFunctions.FileExists(filePath))
             {
-                WriteLine("Please specify a valid path. See --help for more information.");
+                throw new ApplicationException("Please specify a valid path. See --help for more information.");
             }
             else
             {
@@ -65,8 +38,8 @@ namespace CygSoft.Qik.QikConsole
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, "ooops and exception occurred.");
-                    DisplayConsoleError(ex);
+                    logger.Error(ex, "Generate exception ocurred.");
+                    throw;
                 }
             }
         }
@@ -79,7 +52,7 @@ namespace CygSoft.Qik.QikConsole
                     var parts = a.Split('=');
                     return new Input()
                     {
-                        Symbol = "@" + parts[0],
+                        Symbol = parts[0],
                         Value = parts[1]   //maybe you need to check something here
                     };
                 });
@@ -87,34 +60,27 @@ namespace CygSoft.Qik.QikConsole
             return keyValues.ToArray();
         }
 
-
         private void Generate(string filePath, string projectKey, Input[] inputs)
         {
-            WriteLine("Generating output files...");
-
-            projectsFile.Load(filePath);
-            var project = projectsFile.GetProject(projectKey);
+            var project = projectFile.Read(filePath);
             
             fragmentsDictionary = new Dictionary<string, string>();
             GenerateFragments(filePath, inputs, project);
             GenerateDocuments(filePath, project);
-
-            ForegroundColor = ConsoleColor.Green;
-            WriteLine("...Success!");
-            ForegroundColor = ConsoleColor.White;
         }
 
-        private void GenerateFragments(string path, Input[] inputs, Project project)
+        private void GenerateFragments(string path, Input[] inputs, JsonLegacyProject project)
         {
-            var scriptPath = Path.Combine(Path.GetDirectoryName(path), project.ScriptFile);
+            var scriptPath = Path.Combine(Path.GetDirectoryName(path), project.ScriptPath);
             var script = fileFunctions.ReadTextFile(scriptPath);
             var interpreter = new Interpreter();
             var symbolTerminal = interpreter.Interpret(new FunctionFactory(new PluginLoader()), script);
             var terminal = new PlaceholderTerminal(symbolTerminal, "@{", "}");
 
+            // Will override the project file
             foreach(var input in inputs)
             {
-                terminal.SetSymbolValue(input.Symbol, input.Value);
+                terminal.SetSymbolValue($"@{input.Symbol}", input.Value);
             }
             
             foreach (var frag in project.Fragments)
@@ -131,7 +97,7 @@ namespace CygSoft.Qik.QikConsole
             }
         }
 
-        private void GenerateDocuments(string path, Project project)
+        private void GenerateDocuments(string path, JsonLegacyProject project)
         {
             foreach (var document in project.Documents)
             {
@@ -144,7 +110,7 @@ namespace CygSoft.Qik.QikConsole
                     }
                 }
                 
-                foreach (var outputPath in document.Outputs)
+                foreach (var outputPath in document.OutputFilePaths)
                 {
                     var filePath = fileFunctions.GetRootedFilePath(path, outputPath);
 

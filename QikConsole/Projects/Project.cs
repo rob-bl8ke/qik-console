@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CygSoft.Qik.QikConsole;
 
 namespace QikConsole
 {
@@ -19,8 +20,9 @@ namespace QikConsole
 
         public string Key { get; set; }
         public string Title  { get; set; }
-        public string ScriptFile { get; set; }
-        public List<Fragment> Fragments { get; set; } = new List<Fragment>();
-        public List<Document> Documents { get; set; } = new List<Document>();
+        public string ScriptPath { get; set; }
+        public List<Input> Inputs { get; set; } = new();
+        public List<Fragment> Fragments { get; set; } = new();
+        public List<Document> Documents { get; set; } = new ();
     }
 }
