@@ -17,12 +17,14 @@ namespace CygSoft.Qik.QikConsole
     public class CommandFactory : ICommandFactory
     {
         private readonly NLog.ILogger logger;
+        private readonly ConsoleMessages consoleMessages;
         private readonly IProjectsFile projectsFile;
         private readonly IFileFunctions fileFunctions;
 
-        public CommandFactory(IProjectsFile projectsFile, IFileFunctions fileFunctions, NLog.ILogger logger)
+        public CommandFactory(IProjectsFile projectsFile, IFileFunctions fileFunctions, NLog.ILogger logger, ConsoleMessages consoleMessages)
         {
             this.logger = logger ?? throw new ArgumentNullException($"{nameof(logger)} cannot be null.");
+            this.consoleMessages = consoleMessages;
             this.projectsFile = projectsFile ?? throw new ArgumentNullException($"{nameof(projectsFile)} cannot be null.");
             this.fileFunctions = fileFunctions ?? throw new ArgumentNullException($"{nameof(fileFunctions)} cannot be null.");
         }
@@ -32,7 +34,7 @@ namespace CygSoft.Qik.QikConsole
             switch (commandType)
             {
                 case CommandType.Generate:
-                    return new GenerateCommand(projectsFile, fileFunctions, logger).Configure();
+                    return new GenerateCommand(consoleMessages, projectsFile, fileFunctions, logger).Configure();
                 
                 default:
                     throw new NotImplementedException();

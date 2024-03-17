@@ -27,75 +27,82 @@ namespace QikConsole
 
         public Project GetProject(string key)
         {
-            if (document is null || document.Root is null)
-                throw new ApplicationException("Projects file not loaded.");
-            
-            var projectEl = document.Element("projects")
-                .Elements("project")
-                .Where(proj => (string)proj.Attribute("key") == key);
+            try
+            {
+                if (document is null || document.Root is null)
+                    throw new ApplicationException("Projects file not loaded.");
+                
+                var projectEl = document.Element("projects")
+                    .Elements("project")
+                    .Where(proj => (string)proj.Attribute("key") == key);
 
-            var project = projectEl
-                .Select(proj => new Project()
-                {
-                    Key = proj.Attribute("key").Value,
-                    Title = proj.Attribute("value").Value,
+                var project = projectEl
+                    .Select(proj => new Project()
+                    {
+                        Key = proj.Attribute("key").Value,
+                        Title = proj.Attribute("value").Value,
 
-                    ScriptPath = proj.Element("settings")
-                        .Elements("setting")
-                        .Where(setting => setting.Attribute("key").Value == "scriptPath")
-                        .Select(setting => setting.Attribute("value").Value)
-                        .Single(),
+                        ScriptPath = proj.Element("settings")
+                            .Elements("setting")
+                            .Where(setting => setting.Attribute("key").Value == "scriptPath")
+                            .Select(setting => setting.Attribute("value").Value)
+                            .Single(),
 
-                    Fragments = proj.Element("fragments")
-                        .Elements("fragment")
-                        .Select(frag => new Fragment()
-                        {
-                            Id = frag.Attribute("key").Value,
-                            Path = frag.Attribute("path").Value
-                        }).ToList(),
+                        Fragments = proj.Element("fragments")
+                            .Elements("fragment")
+                            .Select(frag => new Fragment()
+                            {
+                                Id = frag.Attribute("key").Value,
+                                Path = frag.Attribute("path").Value
+                            }).ToList(),
 
-                    Documents = proj.Elements("documents")
-                        .Elements("document")
-                        .Select(doc => new QikConsole.Project.Document
-                        {
-                            Outputs = doc.Elements("outputs")
-                                .Elements("output")
-                                .Select(o => o.Attribute("path").Value).ToArray(),
-                            Structure = doc.Elements("parts")
-                                .Elements("part")
-                                .Select(o => o.Attribute("key").Value).ToArray()
-                        })
-                        .ToList()
-                })
-                .SingleOrDefault();
+                        Documents = proj.Elements("documents")
+                            .Elements("document")
+                            .Select(doc => new QikConsole.Project.Document
+                            {
+                                Outputs = doc.Elements("outputs")
+                                    .Elements("output")
+                                    .Select(o => o.Attribute("path").Value).ToArray(),
+                                Structure = doc.Elements("parts")
+                                    .Elements("part")
+                                    .Select(o => o.Attribute("key").Value).ToArray()
+                            })
+                            .ToList()
+                    })
+                    .SingleOrDefault();
 
-            var inputs = new List<Input>();
+                var inputs = new List<Input>();
 
-            inputs.AddRange(projectEl.Elements("inputs").Elements("input")
-                .Select(input => new Input
-                {
-                    Symbol = input.Attribute("symbol").Value,
-                    Value = input.Attribute("value").Value,
+                inputs.AddRange(projectEl.Elements("inputs").Elements("input")
+                    .Select(input => new Input
+                    {
+                        Symbol = input.Attribute("symbol").Value,
+                        Value = input.Attribute("value").Value,
+                    }));
+                
+                inputs.AddRange(projectEl.Elements("inputs").Elements("auto")
+                    .Select(input => new Input
+                    {
+                        Symbol = input.Attribute("symbol").Value,
+                        Value = input.Attribute("value").Value,
+                    }));
+                
+                var references = projectEl.Elements("inputs").Elements("global").Select(rf => rf.Attribute("key").Value);
+                var globals = document.Element("projects").Elements("globals").Elements("input");
+
+                inputs.AddRange(references.Join(globals, rf => rf, g => g.Attribute("key").Value, (rf, g) => new Input{
+                    Symbol = g.Attribute("symbol").Value,
+                    Value = g.Attribute("value").Value
                 }));
-            
-            inputs.AddRange(projectEl.Elements("inputs").Elements("auto")
-                .Select(input => new Input
-                {
-                    Symbol = input.Attribute("symbol").Value,
-                    Value = input.Attribute("value").Value,
-                }));
-            
-            var references = projectEl.Elements("inputs").Elements("global").Select(rf => rf.Attribute("key").Value);
-            var globals = document.Element("projects").Elements("globals").Elements("input");
 
-            inputs.AddRange(references.Join(globals, rf => rf, g => g.Attribute("key").Value, (rf, g) => new Input{
-                Symbol = g.Attribute("symbol").Value,
-                Value = g.Attribute("value").Value
-            }));
+                project.Inputs = inputs;
 
-            project.Inputs = inputs;
-
-            return project;
+                return project;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Projects file could not be loaded. Incompatible XML.", ex);
+            }
         }
 
         private string Open(string filePath)

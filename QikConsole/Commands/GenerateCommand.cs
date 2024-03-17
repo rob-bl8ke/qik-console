@@ -1,6 +1,7 @@
 using System;
 using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
+using System.IO;
 using NLog;
 using QikConsole;
 using static System.Console;
@@ -9,12 +10,14 @@ namespace CygSoft.Qik.QikConsole
 {
     public class GenerateCommand : BaseCommand
     {
+        private readonly ConsoleMessages consoleMessages;
         private readonly IProjectsFile projectsFile;
         private readonly IFileFunctions fileFunctions;
         private readonly ILogger logger;
 
-        public GenerateCommand(IProjectsFile projectsFile, IFileFunctions fileFunctions, ILogger logger)
+        public GenerateCommand(ConsoleMessages consoleMessages, IProjectsFile projectsFile, IFileFunctions fileFunctions, ILogger logger)
         {
+            this.consoleMessages = consoleMessages;
             this.projectsFile = projectsFile;
             this.fileFunctions = fileFunctions;
             this.logger = logger;
@@ -65,19 +68,26 @@ namespace CygSoft.Qik.QikConsole
 
         private void Execute(string filePath, string projectKey, string typeKey, string inputs)
         {
-            if (string.IsNullOrEmpty(typeKey) || typeKey == "xmlprojects")
+            try
             {
-                var generator = new XmlProjectsGenerator(projectsFile, fileFunctions, logger);
-                generator.Execute(filePath, projectKey, inputs);
+                if (string.IsNullOrEmpty(typeKey) && Path.GetExtension(filePath).ToLower() == ".xml")
+                {
+                    var generator = new XmlProjectsGenerator(projectsFile, fileFunctions, logger);
+                    generator.Execute(filePath, projectKey, inputs);
+                }
+                else if (typeKey == "legacyjsonproject")
+                {
+                    var generator = new JsonLegacyProjectGenerator(new JsonLegacyProjectFile(), fileFunctions, logger);
+                    generator.Execute(filePath, projectKey, inputs);
+                }
+                else
+                {
+                    WriteLine("Generation type not supported");
+                }
             }
-            else if (typeKey == "legacyjsonproject")
+            catch (Exception ex)
             {
-                var generator = new JsonLegacyProjectGenerator(new JsonLegacyProjectFile(), fileFunctions, logger);
-                generator.Execute(filePath, projectKey, inputs);
-            }
-            else
-            {
-                WriteLine("Generating something else");
+                consoleMessages.DisplayConsoleError(ex);
             }
         }
     }

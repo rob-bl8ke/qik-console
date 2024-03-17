@@ -40,10 +40,14 @@ class Program
                 .AddSingleton<IFileFunctions>(ah => new FileFunctions())
                 .AddSingleton<IProjectsFile, XmlProjectsFile>()
                 .AddSingleton<ICommandFactory, CommandFactory>()
+                .AddSingleton<ConsoleMessages>()
             ;
 
             serviceProvider = services.BuildServiceProvider();
             commandFactory = serviceProvider.GetService<ICommandFactory>();
+            
+            var consoleMessages = serviceProvider.GetService<ConsoleMessages>();
+            consoleMessages.DisplayWelcomeHeader();
 
             var rootCommand = new RootCommand("Qik Console Application");
             var genCommand = commandFactory.Create(CommandType.Generate);

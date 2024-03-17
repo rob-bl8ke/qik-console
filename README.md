@@ -4,22 +4,44 @@
 
 - Document how to add to PATH (Linux and Windows)
 
+## Description
+
+Generate documents from fragments and input symbols.
+
 ## Usage
 
+- The default generate command takes an `xml` file configuration which includes the necessary parameters.
+- These `xml` parameters can be overridden using the `-i` flag.
+- This configuration allows for the addition of one or more projects in a single configuration file.
+- Get help for existing functionality `qikconsole --help`
+
 ```bash
-qikconsole --help
-# Generate default project type (xmlprojects)
-qikconsole gen -f ./project.xml -p nt
-qikconsole gen -f ./project.xml -p nt  "-i", "IssueId=34567;IssueType=Story;PsReleaseDate=0000:00:00"
-# Generate xmlprojects project
-qikconsole gen -t xmlprojects -f ./project.xml -p nt
-qikconsole gen -t xmlprojects -f ./project.xml -p nt  "-i", "IssueId=34567;IssueType=Story;PsReleaseDate=0000:00:00"
-# Generate legacyjsonproject
-qikconsole gen -t legacyjsonproject -f ./project.xml
-qikconsole gen -t legacyjsonproject -f ./project.xml "-i", "IssueId=34567;IssueType=Story;PsReleaseDate=0000:00:00"
+
+# Generate default project type (project collection)
+qikconsole gen -f ./projects.xml -p nt
+qikconsole gen -f ./projects.xml -p nt  "-i", "IssueId=34567;IssueType=Story;PsReleaseDate=0000:00:00"
 ```
 
-## Configuration
+- Legacy generate is supported however there is a break in compatibility from the initial command.
+- The old command used to be:
+
+```bash
+qikconsole gen simple  -f ./project.json "-i", "IssueId=34567;IssueType=Story;PsReleaseDate=0000:00:00"`
+```
+- This command is now:
+
+```bash
+# Generate legacyjsonproject
+qikconsole gen -t legacyjsonproject -f ./project.json
+qikconsole gen -t legacyjsonproject -f ./project.json "-i", "IssueId=34567;IssueType=Story;PsReleaseDate=0000:00:00"
+```
+
+- The format of the `json` project file remains the same.
+
+## Debug Configuration
+
+- To run via the debugger use the following `launch.json` configuration.
+- Debug to see how the example configuration files work. There are multiple launch configurations that apply multiple argument combinations.
 
 ```json
 {
@@ -37,7 +59,6 @@ qikconsole gen -t legacyjsonproject -f ./project.xml "-i", "IssueId=34567;IssueT
             "program": "${workspaceFolder}/QikConsole/bin/Debug/net7.0/QikConsole.dll",
             "args": [
                 "gen", "--file", "${workspaceFolder}\\Debugging\\Simulations\\xmlprojects\\projects.xml", "--projectKey", "ns"
-                // "gen -f projects.xml -p ns"
             ],
             "cwd": "${workspaceFolder}/QikConsole",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
