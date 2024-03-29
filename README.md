@@ -3,6 +3,41 @@
 ### TODO
 
 - Document how to add to PATH (Linux and Windows)
+- Consider multiple scripts using "input sets":
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<projects>
+    <!-- Globals may or may not be referenced by "input sets" -->
+  <globals>
+    <input key="ps" ... />
+  </globals>
+
+  <project key="ns" value="New Story">
+    <!-- Each "input set" will have its own script... a project could have many input sets -->
+    <inputsets>
+        <inputset path="C:\Dev\Qik-Gen\project.qik">
+            <input key="id" title="Issue Id" symbol="IssueId" value="666666" />
+            ...
+            <global key="ps" />
+        </inputset>
+    </inputsets>
+
+    <!-- Each project can have a post execution script to do such things as move files around etc. -->
+    <postexecutionscript path="C:\Dev\Scripts\data\post-script.ps1">
+        <parameters>
+          <parameter key="source" value="C:\Dev\Qik-Gen\output" />
+          <parameter key="destination" value="C:\Users\rallenblake\OneDrive - Ninety One\Documents\Junk\" />
+          <parameter key="deleteSource" value="true" />
+        </parameters>
+    </postexecutionscript>
+
+    <fragments />
+    <documents />
+
+  </project>
+</projects>
+```
 
 ## Description
 

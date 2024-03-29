@@ -7,8 +7,6 @@
   </globals>
   <project key="nt" value="New Task">
     <settings>
-      <!-- Should be able to remove this when this xml file is fully functional -->
-      <setting key="path" value="C:\Dev\Qik-Gen\project.json" />
       <setting key="scriptPath" value="C:\Dev\Qik-Gen\project.qik" />
       <setting key="postScript" value="C:\Dev\Scripts\data\post-script.ps1">
         <parameters>
@@ -42,8 +40,6 @@
   </project>
   <project key="ns" value="New Story">
     <settings>
-      <!-- Should be able to remove this when this xml file is fully functional -->
-      <setting key="path" value="C:\Dev\Qik-Gen\project.json" />
       <setting key="scriptPath" value="C:\Dev\Qik-Gen\project.qik" />
       <setting key="postScript" value="C:\Dev\Scripts\data\post-script.ps1">
         <parameters>
