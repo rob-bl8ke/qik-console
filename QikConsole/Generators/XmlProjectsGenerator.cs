@@ -106,24 +106,27 @@ namespace CygSoft.Qik.QikConsole
 
         private void GenerateDocuments(string path, Project project)
         {
+            var keys = fragmentsDictionary.Keys;
             foreach (var document in project.Documents)
             {
-                StringBuilder builder = new StringBuilder();
-                foreach(var structure in document.Structure)
+                if (fragmentsDictionary.TryGetValue(document.Source, out string rootFragment))
                 {
-                    if (fragmentsDictionary.ContainsKey(structure))
+                    foreach (var key in keys)
                     {
-                        builder.AppendLine(fragmentsDictionary[structure]);
+                        if (fragmentsDictionary.TryGetValue(key, out string insertionText))
+                        {
+                            rootFragment = rootFragment.Replace("@{" + key + "}", insertionText);
+                        }
                     }
                 }
-                
+
                 foreach (var outputPath in document.Outputs)
                 {
                     var filePath = fileFunctions.GetRootedFilePath(path, outputPath);
 
                     if (fileFunctions.FileExists(filePath)) fileFunctions.DeleteFile(filePath);
                     
-                    fileFunctions.WriteTextFile(filePath, builder.ToString());
+                    fileFunctions.WriteTextFile(filePath, rootFragment);
                 }
             }
         }

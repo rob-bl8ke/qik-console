@@ -28,13 +28,11 @@
       <global key="u2" />
     </inputs>
     <fragments>
+      <fragment key="document" path=".\fragments\document.qikt" />
       <fragment key="fragment" path=".\fragments\fragment.qikt" />
     </fragments>
     <documents>
-      <document>
-        <parts>
-          <part key="fragment" />
-        </parts>
+      <document key="document">
         <outputs>
           <output path=".\\output\doc.md" />
         </outputs>

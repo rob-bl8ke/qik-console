@@ -58,14 +58,12 @@ namespace QikConsole
 
                         Documents = proj.Elements("documents")
                             .Elements("document")
-                            .Select(doc => new QikConsole.Project.Document
+                            .Select(doc => new Document
                             {
+                                Source = doc.Attribute("key").Value,
                                 Outputs = doc.Elements("outputs")
                                     .Elements("output")
-                                    .Select(o => o.Attribute("path").Value).ToArray(),
-                                Structure = doc.Elements("parts")
-                                    .Elements("part")
-                                    .Select(o => o.Attribute("key").Value).ToArray()
+                                    .Select(o => o.Attribute("path").Value).ToArray()
                             })
                             .ToList()
                     })

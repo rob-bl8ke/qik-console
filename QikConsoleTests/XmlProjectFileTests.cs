@@ -42,22 +42,20 @@ namespace QikConsoleTests
             Project project = file.GetProject("nt");
 
             Assert.AreEqual(2, project.Fragments.Count());
-            Assert.AreEqual("deploy", project.Fragments[0].Id);
-            Assert.AreEqual(@"..\fragments\deploy.qikt", project.Fragments[0].Path);
-            Assert.AreEqual("usecase", project.Fragments[1].Id);
-            Assert.AreEqual(@"..\fragments\usecase.qikt", project.Fragments[1].Path);
+            Assert.AreEqual("document", project.Fragments[0].Id);
+            Assert.AreEqual(@"..\fragments\document.qikt", project.Fragments[0].Path);
+            Assert.AreEqual("fragment", project.Fragments[1].Id);
+            Assert.AreEqual(@"..\fragments\fragment.qikt", project.Fragments[1].Path);
         }
 
         [Test]
-        public void Should_Get_Project_Document_Structure()
+        public void Should_Get_Project_Document_Source()
         {
             XmlProjectsFile file = new XmlProjectsFile();
             file.Load(FileHelpers.GetProjectXmlFilePath());
             Project project = file.GetProject("nt");
 
-            Assert.AreEqual(2, project.Documents[0].Structure.Count());
-            Assert.AreEqual("deploy", project.Documents[0].Structure[0]);
-            Assert.AreEqual("usecase", project.Documents[0].Structure[1]);
+            Assert.AreEqual("document", project.Documents[0].Source);
         }
 
         [Test]
