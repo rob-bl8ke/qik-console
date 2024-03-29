@@ -6,7 +6,7 @@
     "fragments": [
         {
             "id": "fragment",
-            "path": ".\\fragments\\fragment.qikt"
+            "path": ".\\fragments\\simple-fragment.qikt"
         }
     ],
     "documents": [

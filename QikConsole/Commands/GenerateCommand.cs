@@ -37,7 +37,7 @@ namespace CygSoft.Qik.QikConsole
                 Arity = ArgumentArity.ExactlyOne
             };
 
-            var typeOption = new Option<string>(new[] { "--type", "-t" }, "Type of project to support. To support the legacy JSON project set to 'legacyjsonproject'.")
+            var typeOption = new Option<string>(new[] { "--type", "-t" }, "Type of project to support. To support the legacy JSON project set to 'legacyjsonproject'. 'projectKey' is required... make it any value.")
             {
                 IsRequired = false,
                 Arity = ArgumentArity.ExactlyOne
