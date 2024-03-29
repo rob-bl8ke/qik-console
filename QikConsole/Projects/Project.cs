@@ -14,7 +14,8 @@ namespace QikConsole
 
         public class Document
         {
-            public string Source { get; set; }
+            public string Key { get; set; }
+            public string Path { get; set; }
             public string[] Outputs { get; set; }
         }
 

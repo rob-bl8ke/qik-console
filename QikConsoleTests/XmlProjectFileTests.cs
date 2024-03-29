@@ -42,20 +42,30 @@ namespace QikConsoleTests
             Project project = file.GetProject("nt");
 
             Assert.AreEqual(2, project.Fragments.Count());
-            Assert.AreEqual("document", project.Fragments[0].Id);
-            Assert.AreEqual(@"..\fragments\document.qikt", project.Fragments[0].Path);
-            Assert.AreEqual("fragment", project.Fragments[1].Id);
-            Assert.AreEqual(@"..\fragments\fragment.qikt", project.Fragments[1].Path);
+            Assert.AreEqual("fragment1", project.Fragments[0].Id);
+            Assert.AreEqual(@"..\fragments\fragment1.qikt", project.Fragments[0].Path);
+            Assert.AreEqual("fragment2", project.Fragments[1].Id);
+            Assert.AreEqual(@"..\fragments\fragment2.qikt", project.Fragments[1].Path);
         }
 
         [Test]
-        public void Should_Get_Project_Document_Source()
+        public void Should_Get_Project_Document_Path()
         {
             XmlProjectsFile file = new XmlProjectsFile();
             file.Load(FileHelpers.GetProjectXmlFilePath());
             Project project = file.GetProject("nt");
 
-            Assert.AreEqual("document", project.Documents[0].Source);
+            Assert.AreEqual(".\\documents\\document1.qikt", project.Documents[0].Path);
+        }
+
+        [Test]
+        public void Should_Get_Project_Document_Key()
+        {
+            XmlProjectsFile file = new XmlProjectsFile();
+            file.Load(FileHelpers.GetProjectXmlFilePath());
+            Project project = file.GetProject("nt");
+
+            Assert.AreEqual("document1", project.Documents[0].Key);
         }
 
         [Test]

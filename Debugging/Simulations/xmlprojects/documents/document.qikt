@@ -1,0 +1,22 @@
+# My Document
+This is a special type of template. It's referred to as a document template as it contains placeholders for symbols and placeholders specifying where to insert the output from fragment templates.
+
+This is a simple template document. Any template can contain placeholders for child templates to be inserted.
+
+### Symbols
+
+- @{IssueId}
+- @{IssueTitle}
+- @{ParentIssueId}
+- @{IssueType}
+- @{PsReleaseDate}
+- @{Uat1ReleaseDate}
+- @{Uat2ReleaseDate}
+
+### Simple fragment
+
+@{simple-fragment}
+
+### Table fragment
+
+@{table-fragment}

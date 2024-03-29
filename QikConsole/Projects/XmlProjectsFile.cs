@@ -60,14 +60,15 @@ namespace QikConsole
                             .Elements("document")
                             .Select(doc => new Document
                             {
-                                Source = doc.Attribute("key").Value,
+                                Key = doc.Attribute("key").Value,
+                                Path = doc.Attribute("path").Value,
                                 Outputs = doc.Elements("outputs")
                                     .Elements("output")
                                     .Select(o => o.Attribute("path").Value).ToArray()
                             })
                             .ToList()
-                    })
-                    .SingleOrDefault();
+                    }
+                ).SingleOrDefault();
 
                 var inputs = new List<Input>();
 
@@ -76,14 +77,16 @@ namespace QikConsole
                     {
                         Symbol = input.Attribute("symbol").Value,
                         Value = input.Attribute("value").Value,
-                    }));
+                    })
+                );
                 
                 inputs.AddRange(projectEl.Elements("inputs").Elements("auto")
                     .Select(input => new Input
                     {
                         Symbol = input.Attribute("symbol").Value,
                         Value = input.Attribute("value").Value,
-                    }));
+                    })
+                );
                 
                 var references = projectEl.Elements("inputs").Elements("global").Select(rf => rf.Attribute("key").Value);
                 var globals = document.Element("projects").Elements("globals").Elements("input");

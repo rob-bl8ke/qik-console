@@ -28,11 +28,11 @@
       <global key="u2" />
     </inputs>
     <fragments>
-      <fragment key="document" path="..\fragments\document.qikt" />
-      <fragment key="fragment" path="..\fragments\fragment.qikt" />
+      <fragment key="fragment1" path="..\fragments\fragment1.qikt" />
+      <fragment key="fragment2" path="..\fragments\fragment2.qikt" />
     </fragments>
     <documents>
-      <document key="document">
+      <document key="document1" path=".\documents\document1.qikt">
         <outputs>
           <output path="..\_testing\usecase-diagrams.md" />
           <output path="usecase-diagrams.md" />
@@ -63,11 +63,11 @@
       <global key="u2" />
     </inputs>
     <fragments>
-      <fragment key="document" path="..\fragments\document.qikt" />
-      <fragment key="fragment" path="..\fragments\fragment.qikt" />
+      <fragment key="fragment1" path="..\fragments\fragment1.qikt" />
+      <fragment key="fragment2" path="..\fragments\fragment.qikt" />
     </fragments>
     <documents>
-      <document key="document">
+      <document key="document2"  path=".\documents\document2.qikt">
         <outputs>
           <output path="..\_testing\usecase-diagrams.md" />
           <output path="usecase-diagrams.md" />

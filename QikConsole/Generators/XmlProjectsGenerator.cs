@@ -66,11 +66,12 @@ namespace CygSoft.Qik.QikConsole
             var project = projectsFile.GetProject(projectKey);
             
             fragmentsDictionary = new Dictionary<string, string>();
-            GenerateFragments(filePath, inputs, project);
-            GenerateDocuments(filePath, project);
+            var terminal = InitializeTerminal(filePath, inputs, project);
+            GenerateFragments(filePath, project, terminal);
+            GenerateDocuments(filePath, project, terminal);
         }
 
-        private void GenerateFragments(string path, Input[] inputs, Project project)
+        private PlaceholderTerminal InitializeTerminal(string path, Input[] inputs, Project project)
         {
             var scriptPath = Path.Combine(Path.GetDirectoryName(path), project.ScriptPath);
             var script = fileFunctions.ReadTextFile(scriptPath);
@@ -89,7 +90,12 @@ namespace CygSoft.Qik.QikConsole
             {
                 terminal.SetSymbolValue($"@{input.Symbol}", input.Value);
             }
-            
+
+            return terminal;
+        }
+
+        private void GenerateFragments(string path, Project project, PlaceholderTerminal terminal)
+        {   
             foreach (var frag in project.Fragments)
             {
                 var fullPath = Path.Combine(Path.GetDirectoryName(path), frag.Path);
@@ -104,19 +110,23 @@ namespace CygSoft.Qik.QikConsole
             }
         }
 
-        private void GenerateDocuments(string path, Project project)
+        private void GenerateDocuments(string path, Project project, PlaceholderTerminal terminal)
         {
-            var keys = fragmentsDictionary.Keys;
             foreach (var document in project.Documents)
             {
-                if (fragmentsDictionary.TryGetValue(document.Source, out string rootFragment))
+                var fullPath = Path.Combine(Path.GetDirectoryName(path), document.Path);
+                var templateText = fileFunctions.ReadTextFile(fullPath);
+
+                foreach (var placeholder in terminal.Placeholders)
                 {
-                    foreach (var key in keys)
+                    templateText = templateText.Replace(placeholder, terminal.GetPlaceholderValue(placeholder));
+                }
+
+                foreach (var fragmentKey in fragmentsDictionary.Keys)
+                {
+                    if (fragmentsDictionary.TryGetValue(fragmentKey, out string insertionText))
                     {
-                        if (fragmentsDictionary.TryGetValue(key, out string insertionText))
-                        {
-                            rootFragment = rootFragment.Replace("@{" + key + "}", insertionText);
-                        }
+                        templateText = templateText.Replace("@{" + fragmentKey + "}", insertionText);
                     }
                 }
 
@@ -125,8 +135,7 @@ namespace CygSoft.Qik.QikConsole
                     var filePath = fileFunctions.GetRootedFilePath(path, outputPath);
 
                     if (fileFunctions.FileExists(filePath)) fileFunctions.DeleteFile(filePath);
-                    
-                    fileFunctions.WriteTextFile(filePath, rootFragment);
+                    fileFunctions.WriteTextFile(filePath, templateText);
                 }
             }
         }
