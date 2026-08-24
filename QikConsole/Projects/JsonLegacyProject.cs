@@ -2,8 +2,19 @@ using System.Collections.Generic;
 
 namespace CygSoft.Qik.QikConsole
 {
-    public class Project
+    public class JsonLegacyProject
     {
+        public class Fragment
+        {
+            public string Id { get; set; }
+            public string Path { get; set; }
+        }
+
+        public class Document
+        {
+            public string[] OutputFilePaths { get; set; }
+            public string[] Structure { get; set; }
+        }
         public string ScriptPath { get; set; }
         
         public List<string> PreExecutionScripts { get; set; } = new List<string>();
@@ -13,21 +24,4 @@ namespace CygSoft.Qik.QikConsole
         public List<Document> Documents { get; set; } = new List<Document>();
     }
 
-    public class Fragment
-    {
-        public string Id { get; set; }
-        public string Path { get; set; }
-    }
-
-    public class Input
-    {
-        public string Symbol { get; set; }
-        public string Value { get; set; }
-    }
-
-    public class Document
-    {
-        public string[] OutputFilePaths { get; set; }
-        public string[] Structure { get; set; }
-    }
 }

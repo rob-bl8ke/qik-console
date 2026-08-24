@@ -1,0 +1,9 @@
+| Key | Value | 
+| --- | --- |
+| IssueId |    @{IssueId} |
+| IssueTitle |    @{IssueTitle} |
+| ParentIssueId |    @{ParentIssueId} |
+| IssueType |    @{IssueType} |
+| PsReleaseDate |    @{PsReleaseDate} |
+| Uat1ReleaseDate |    @{Uat1ReleaseDate} |
+| Uat2ReleaseDate |    @{Uat2ReleaseDate} |

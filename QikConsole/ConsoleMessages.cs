@@ -1,22 +1,18 @@
 using System;
-using System.CommandLine;
+using static System.Console;
 
 namespace CygSoft.Qik.QikConsole
 {
-    using static System.Console;
-
-    public abstract class BaseCommand
+    public class ConsoleMessages
     {
-        public abstract Command Configure();
-
-        protected void DisplayWelcomeHeader()
+        public void DisplayWelcomeHeader()
         {
             ForegroundColor = ConsoleColor.Blue;
             WriteLine(new Resources().GetWelcomeHeader());
             ForegroundColor = ConsoleColor.White;
         }
 
-        protected void DisplayConsoleError(Exception ex)
+        public void DisplayConsoleError(Exception ex)
         {
             ForegroundColor = ConsoleColor.Red;
             WriteLine("An error occurred!");

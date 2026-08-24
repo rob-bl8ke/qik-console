@@ -1,16 +1,11 @@
+using System.IO;
 using System.Text;
 using System.Text.Json;
-using System.IO;
+using CygSoft.Qik.QikConsole;
 
-namespace CygSoft.Qik.QikConsole
+namespace QikConsole
 {
-    public interface IProjectFile
-    {
-        void Write(Project project, string path);
-        Project Read(string path);
-    }
-
-    public class ProjectFile : IProjectFile
+    public class JsonLegacyProjectFile
     {
         public void Write(Project project, string path)
         {
@@ -22,11 +17,11 @@ namespace CygSoft.Qik.QikConsole
             WriteTextFile(path, result.ToString());
         }
 
-        public Project Read(string path)
+        public JsonLegacyProject Read(string path)
         {
             var text = ReadTextFile(path);
             var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-            var project = JsonSerializer.Deserialize<Project>(text, options);
+            var project = JsonSerializer.Deserialize<JsonLegacyProject>(text, options);
             return project;
         }
 

@@ -7,6 +7,7 @@ using CygSoft.Qik.QikConsole;
 
 using NLog;
 using NLog.Extensions.Logging;
+using QikConsole;
 
 //
 // TODO: Find out how to dependency inject the logger in order to mock the interface for unit tests.
@@ -37,20 +38,20 @@ class Program
                 .AddSingleton<IInterpreter, Interpreter>()
                 .AddSingleton<ILogger>(logger => LogManager.Setup().LoadConfigurationFromSection(config).GetCurrentClassLogger())
                 .AddSingleton<IFileFunctions>(ah => new FileFunctions())
-                .AddSingleton<IProjectFile, ProjectFile>()
+                .AddSingleton<IProjectsFile, XmlProjectsFile>()
                 .AddSingleton<ICommandFactory, CommandFactory>()
+                .AddSingleton<ConsoleMessages>()
             ;
 
             serviceProvider = services.BuildServiceProvider();
             commandFactory = serviceProvider.GetService<ICommandFactory>();
+            
+            var consoleMessages = serviceProvider.GetService<ConsoleMessages>();
+            consoleMessages.DisplayWelcomeHeader();
 
             var rootCommand = new RootCommand("Qik Console Application");
-            var generateCommand = new Command("gen", "Generate output.");
-
-            rootCommand.Add(generateCommand);
-
-            generateCommand.Add(commandFactory.Create(CommandType.GenerateSimple));
-            // generateCommand.Add(commandFactory.Create(CommandType.GenerateMatrix));
+            var genCommand = commandFactory.Create(CommandType.Generate);
+            rootCommand.Add(genCommand);
 
             //
             // Parse the incoming args and invoke the handler

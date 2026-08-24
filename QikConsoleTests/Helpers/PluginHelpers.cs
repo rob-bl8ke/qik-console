@@ -4,7 +4,7 @@ using Moq;
 
 namespace QikConsoleTests
 {
-    public class TestHelpers
+    public class PluginHelpers
     {
         internal static IPluginLoader StubPluginLoader { get => new Mock<IPluginLoader>().Object; }
     }

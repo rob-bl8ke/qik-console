@@ -1,14 +1,12 @@
 using System;
 using System.CommandLine;
+using QikConsole;
 
 namespace CygSoft.Qik.QikConsole
 {
-    using static System.Console;
-
     public enum CommandType
     {
-        GenerateSimple,
-        GenerateMatrix
+        Generate
     }
 
     public interface ICommandFactory
@@ -19,13 +17,15 @@ namespace CygSoft.Qik.QikConsole
     public class CommandFactory : ICommandFactory
     {
         private readonly NLog.ILogger logger;
-        private readonly IProjectFile projectFile;
+        private readonly ConsoleMessages consoleMessages;
+        private readonly IProjectsFile projectsFile;
         private readonly IFileFunctions fileFunctions;
 
-        public CommandFactory(IProjectFile projectFile, IFileFunctions fileFunctions, NLog.ILogger logger)
+        public CommandFactory(IProjectsFile projectsFile, IFileFunctions fileFunctions, NLog.ILogger logger, ConsoleMessages consoleMessages)
         {
             this.logger = logger ?? throw new ArgumentNullException($"{nameof(logger)} cannot be null.");
-            this.projectFile = projectFile ?? throw new ArgumentNullException($"{nameof(projectFile)} cannot be null.");
+            this.consoleMessages = consoleMessages;
+            this.projectsFile = projectsFile ?? throw new ArgumentNullException($"{nameof(projectsFile)} cannot be null.");
             this.fileFunctions = fileFunctions ?? throw new ArgumentNullException($"{nameof(fileFunctions)} cannot be null.");
         }
 
@@ -33,11 +33,8 @@ namespace CygSoft.Qik.QikConsole
         {
             switch (commandType)
             {
-                case CommandType.GenerateSimple:
-                    return new GenerateSimpleCommand(projectFile, fileFunctions, logger).Configure();
-
-                case CommandType.GenerateMatrix:
-                    return new GenerateMatrixCommand(projectFile, fileFunctions, logger).Configure();
+                case CommandType.Generate:
+                    return new GenerateCommand(consoleMessages, projectsFile, fileFunctions, logger).Configure();
                 
                 default:
                     throw new NotImplementedException();
